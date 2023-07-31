@@ -13,8 +13,10 @@
     "firebase": "^10.1.0",
     "firebase-tools": "^12.4.6",
     "material-ui-core": "^5.0.1",
+    "querystring-es3": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-instagram-embed": "^3.0.0",
     "react-scripts": "5.0.1",
     "styled-components": "^6.0.5",
     "web-vitals": "^2.1.0"
