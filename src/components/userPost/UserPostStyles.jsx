@@ -31,12 +31,27 @@ export const PostStyles = styled.div`
     margin-top: 10px;
   }
 
+  .post-comments{
+    padding-left: 1rem;
+  }
+
+  .post-comments p{
+    padding-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
   .post-input {
     flex: 2;
     border: none;
     padding: 10px;
     border-top: 1px solid lightgray;
   }
+
+  .post-input:focus {
+    outline: none;
+  }
+
+
 
   .post-btn {
     flex: 1;

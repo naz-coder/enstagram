@@ -64,8 +64,9 @@ const ImagePicker = ({ userName }) => {
           placeholder="Enter a caption..."
           onChange={(e) => setKaption(e.target.value)}
           value={kaption}
+          className="kaption-input"
         />
-        <input type="file" onChange={fileUploadHandler} />
+        <input type="file" onChange={fileUploadHandler} className="choose-file"/>
         <Button onClick={uploadBtnHandler} className="publish-btn">Publish</Button>
       </div>
     </ImagePickerStyles>

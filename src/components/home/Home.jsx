@@ -12,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import Footer from "../footer/Footer";
 // import InstagramEmbed from "react-instagram-embed";
 
 const Home = () =>{
@@ -147,7 +148,7 @@ const Home = () =>{
               onChange={(e) => setPasswordValue(e.target.value)}
             />
             <br></br>
-            <Button onClick={signUpHandler}>Sign up</Button>
+            <Button onClick={signUpHandler} className="sign-up-btn">Sign up</Button>
           </form>
         </Box>
       </Modal>
@@ -176,7 +177,7 @@ const Home = () =>{
               onChange={(e) => setPasswordValue(e.target.value)}
             />
             <br></br>
-            <Button onClick={loginHandler}>Login</Button>
+            <Button onClick={loginHandler} className="log-in-btn">Login</Button>
           </form>
         </Box>
       </Modal>
@@ -186,25 +187,26 @@ const Home = () =>{
         <div><img src={enstagramlogo} className="app-logo" alt="app-logo" /></div>
       <div>
       {user ? (
-        <Button onClick={() => auth.signOut()}>Logout</Button>
+        <Button onClick={() => auth.signOut()} className="log-in-btn">Logout</Button>
       ) : (
         <div className="login-container">
-          <Button onClick={() => setOpenLogin(true)}>Login</Button>
-          <Button onClick={() => setOpen(true)}>Sign up</Button>
+          <Button onClick={() => setOpenLogin(true)} className="log-in-btn">Login</Button>
+          <Button onClick={() => setOpen(true)} className="sign-up-btn">Sign up</Button>
         </div>
       )}
       </div>
     </div>
 
-      <h1>ENSTAGRAM - a replica of the Instagram app</h1>
+      <h1 className="app-subtitle">Connect, Chat, and Explore - Your Ultimate Chat and Social Zone</h1>
 
       {/* Option chaining with ?. in place of Try Catch */}
       {user?.email ? (
         <ImagePicker userName={user.displayName} />
       ) : (
-        <h3>Please, you must login to upload a photo.</h3>
+        <h3 className="error-msg">Please, you must login to upload a photo.</h3>
       )}
 
+      <div className="postings-container">
       <div className="user-postings">
         {userposts.map(({ id, post }) => (
           <UserPost
@@ -217,6 +219,9 @@ const Home = () =>{
           />
         ))}
       </div>
+
+      </div>
+
         {/* <InstagramEmbed
         url='https://www.instagram.com/p/CNFSZp3p7rS/?utm_source=ig_web_copy_link&igshid=MzRlODBiNWFlZA=='
         clientAccessToken='123|456'
@@ -230,6 +235,7 @@ const Home = () =>{
         onAfterRender={() => {}}
         onFailure={() => {}}
       /> */}
+      <Footer/>
     </div>
     </HomeStyles>
   );
