@@ -30,6 +30,8 @@ export const HomeStyles = styled.div`
     font-family: "Fira Sans", sans-serif;
     font-family: "Josefin Sans", sans-serif;
     font-family: "Zen Kurenaido", sans-serif;
+    padding-left: 1rem;
+padding-right: 1rem;
 
   }
 
