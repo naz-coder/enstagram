@@ -1,4 +1,4 @@
-# Welcome to My Yelp
+# Welcome to My Instagram
 ***
 
 ## Description
