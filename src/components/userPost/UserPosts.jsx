@@ -15,37 +15,97 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
   const [islike, setIsliked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const inputRef = useRef(null);
-
+  
   useEffect(() => {
     let unsubscribe;
     if (postId) {
-      const userPostRef = doc(collection(db, "userposts"), postId);
-      const userCommentRef = collection(userPostRef, "userComments");
+      const userPostRef = doc(db, "userposts", postId);
       const userPostLikesRef = collection(userPostRef, "postLikes");
-  
-      unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
-        const komments = snapshot.docs.map((doc) => doc.data());
-        setUserComments(komments);
+
+      // Fetch the hidden status of the post and update the local state
+      unsubscribe = onSnapshot(userPostRef, (snapshot) => {
+        const postData = snapshot.data();
+        setHidden(postData?.hidden || false);
       });
-  
+
+      // Check if the current user has liked the post
       if (user) {
-        // Check if the current user has liked the post
         const querySnapshot = getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
         querySnapshot.then((snapshot) => {
           const likedByUser = !snapshot.empty;
           setIsliked(likedByUser);
-          setLikeCount(snapshot.docs.length); // Set the like count based on the number of like documents
+          setLikeCount(snapshot.docs.length);
         });
       } else {
         setIsliked(false);
         setLikeCount(0);
       }
     }
+
+    // Fetch comments only when the post is not hidden
+    if (!hidden) {
+      const userCommentRef = collection(doc(db, "userposts", postId), "userComments");
+
+      unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
+        const komments = snapshot.docs.map((doc) => doc.data());
+        setUserComments(komments);
+      });
+    }
+
     return () => {
       unsubscribe();
     };
-  }, [postId, user]);
+  }, [postId, user, hidden]);
+  // useEffect(() => {
+  //   let unsubscribe;
+  //   if (postId) {
+  //     const userPostRef = doc(db, "userposts", postId);
+  //     const userCommentRef = collection(userPostRef, "userComments");
+  //     const userPostLikesRef = collection(userPostRef, "postLikes");
+      
+  //     // Fetch the post data including the 'hidden' flag
+  //     unsubscribe = onSnapshot(userPostRef, (snapshot) => {
+  //       const postData = snapshot.data();
+  //       setHidden(postData?.hidden || false);
+  //     });
+  //   // let unsubscribe;
+  //   // if (postId) {
+  //   //   const userPostRef = doc(collection(db, "userposts"), postId);
+  //   //   const userCommentRef = collection(userPostRef, "userComments");
+  //   //   const userPostLikesRef = collection(userPostRef, "postLikes");
+
+  //   //   unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
+  //   //     const komments = snapshot.docs.map((doc) => doc.data());
+  //   //     setUserComments(komments);
+  //   //   });
+
+  //     if (user) {
+  //       // Check if the current user has liked the post
+  //       const querySnapshot = getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
+  //       querySnapshot.then((snapshot) => {
+  //         const likedByUser = !snapshot.empty;
+  //         setIsliked(likedByUser);
+  //         setLikeCount(snapshot.docs.length); // Set the like count based on the number of like documents
+  //       });
+  //     } else {
+  //       setIsliked(false);
+  //       setLikeCount(0);
+  //     }
+
+  //     // Fetch the hidden status of the post and update the local state
+  //     onSnapshot(userPostRef, (snapshot) => {
+  //       const postData = snapshot.data();
+  //       setHidden(postData?.hidden || false);
+  //     });
+  //   }
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [postId, user]);
+
   
   
   const postCommentHandler = async (e) => {
@@ -63,15 +123,22 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
     }
   };
 
-  const deletePostHandler = () => {
+  const deletePostHandler = async () => {
     if (user.displayName === userName) {
-      // Delete the post here
-      console.log("Deleting post...");
+      try {
+        const postRef = doc(db, "userposts", postId);
+        await updateDoc(postRef, { hidden: true }); // Update the 'hidden' flag to true
+        setHidden(true); // Update the local state to hide the post
+        console.log("Post hidden successfully.");
+      } catch (error) {
+        console.error("Error hiding the post:", error);
+      }
     } else {
-      console.log("You are not allowed to delete this post.");
+      console.log("You are not allowed to hide this post.");
     }
   };
-    
+
+
   // Like toggle function and like counter update
   const likeHandler = async () => {
     if (user) {
@@ -123,6 +190,7 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
 
   return (
     <PostStyles>
+      {!hidden &&
       <div className="card-outter">
         <div className="post-container">
           <div className="post-header">
@@ -202,6 +270,7 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
           )}
         </div>
       </div>
+}
     </PostStyles>
   );
 };

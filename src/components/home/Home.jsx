@@ -287,6 +287,9 @@ const Home = () => {
             ))}
         </div>
         </div>
+        {/* <div className="right-layout">
+          {userName}
+        </div> */}
         </div>
 
         {/* <InstagramEmbed
