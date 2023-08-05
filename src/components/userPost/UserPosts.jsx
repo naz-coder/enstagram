@@ -1,29 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { PostStyles } from "./UserPostStyles";
 import { Avatar } from "material-ui-core";
 import { db } from "../../firebase";
-import { addDoc, collection, doc, onSnapshot, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, serverTimestamp, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { FcLike } from "react-icons/fc";
+import { AiOutlineHeart } from "react-icons/ai";
+import { FaRegComment, FaShareSquare, FaRegBookmark, FaBookmark } from "react-icons/fa";
 
-const UserPost = ({ postId, user, userName, kaption, imgSrc }) => {
+const UserPost = ({ postId, user, userName, kaption, imgSrc, postLikes }) => {
   const [userComments, setUserComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [islike, setIsliked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [isSaved, setIsSaved] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     let unsubscribe;
     if (postId) {
       const userPostRef = doc(collection(db, "userposts"), postId);
       const userCommentRef = collection(userPostRef, "userComments");
-
+      const userPostLikesRef = collection(userPostRef, "postLikes");
+  
       unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
         const komments = snapshot.docs.map((doc) => doc.data());
         setUserComments(komments);
       });
+  
+      if (user) {
+        // Check if the current user has liked the post
+        const querySnapshot = getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
+        querySnapshot.then((snapshot) => {
+          const likedByUser = !snapshot.empty;
+          setIsliked(likedByUser);
+          setLikeCount(snapshot.docs.length); // Set the like count based on the number of like documents
+        });
+      } else {
+        setIsliked(false);
+        setLikeCount(0);
+      }
     }
     return () => {
       unsubscribe();
     };
-  }, [postId]);
-
+  }, [postId, user]);
+  
+  
   const postCommentHandler = async (e) => {
     e.preventDefault();
     const userCommentRef = collection(doc(db, "userposts", postId), "userComments");
@@ -48,6 +70,46 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc }) => {
     }
   };
 
+  // Like toggle function and like counter update
+  const likeHandler = async () => {
+    if (user) {
+      const userPostRef = doc(collection(db, "userposts"), postId);
+      const userPostLikesRef = collection(userPostRef, "postLikes");
+  
+      try {
+        // Check if the post is already liked by the user
+        const querySnapshot = await getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
+        const likedByUser = !querySnapshot.empty;
+  
+        if (!likedByUser) {
+          // If the post is not liked, add the user's like
+          await addDoc(userPostLikesRef, { userId: user.uid });
+          setLikeCount((prevCount) => prevCount + 1); // Update the like count using the previous count
+        } else {
+          // If the post is already liked, remove the user's like
+          await querySnapshot.docs[0].ref.delete();
+          setLikeCount((prevCount) => prevCount - 1); // Update the like count using the previous count
+        }
+        setIsliked(!likedByUser); // Toggle the like state based on whether the user has liked or unliked the post
+      } catch (error) {
+        console.error("Like Error:", error);
+      }
+    }
+  };
+        
+  
+
+  // Comment activation function
+  const commentHandler = () => {
+    inputRef.current.focus();
+  };
+
+  // Bookmark a post
+  const postSaveHandler = () => {
+    setIsSaved(!isSaved);
+  }
+
+
   return (
     <PostStyles>
       <div className="card-outter">
@@ -61,6 +123,32 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc }) => {
           <p className="post-text">
             <strong>{userName}</strong> {kaption}
           </p>
+
+          {/* Post Engagements */}
+          <div className="post-engagement-container">
+            <div className="post-engagment-content">
+            <div className="post-like" onClick={likeHandler}>
+              {islike ? <FcLike className="like-icon" /> : <AiOutlineHeart className="like-icon" />}
+            </div>
+
+          <div className="post-comment" onClick={commentHandler}>
+            <FaRegComment className="comment-icon"/>
+          </div>
+          <div className="post-share">
+            <FaShareSquare className="share-icon"/>
+          </div>
+            </div>
+
+            <div className="post-engagment-bookmark" onClick={postSaveHandler}>
+               {isSaved ? <FaBookmark className="bookmark-icon"/> : <FaRegBookmark className="bookmark-icon"/> }
+             </div>
+          </div>
+
+          {/* Post Engagments Results */}
+           <div className="engagement-result">
+           <p className="post-likes-count">{likeCount} {likeCount === 1 ? "like" : "likes"}</p>
+           <p className="post-save">{isSaved && <p>Saved</p>}</p>
+           </div>
 
           <div className="post-comments">
             {userComments.map((komment) => (
@@ -79,6 +167,7 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc }) => {
                   placeholder="Add your comment..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
+                  ref={inputRef}
                 />
                 <button
                   className="post-btn"
@@ -105,3 +194,4 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc }) => {
 };
 
 export default UserPost;
+

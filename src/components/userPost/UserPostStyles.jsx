@@ -28,6 +28,36 @@ export const PostStyles = styled.div`
     padding: 1rem;
   }
 
+  .post-engagement-container{
+    padding: 0 1rem 0.4rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .post-engagment-content{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1rem;
+  }
+
+  .like-icon{
+    color: #000000;
+    font-size: 1.5rem;
+  }
+
+  .comment-icon, .share-icon, .bookmark-icon{
+    color: #000000;
+    font-size: 1.3rem;
+  }
+
+  .like-icon:hover, .comment-icon:hover, .share-icon:hover, .bookmark-icon:hover{
+    cursor: pointer;
+    opacity: 0.9;
+  }
+
+
+
   .post-comment-container {
     display: flex;
     margin-top: 10px;
@@ -67,6 +97,29 @@ export const PostStyles = styled.div`
   .post-btn:disabled {
     cursor: not-allowed;
   }
+
+  .post-likes-count{
+    padding: 0.2rem 1rem 0.9rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #333333;
+  }
+
+  .post-save{
+    padding: 0.2rem 1rem 0.9rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #555555;
+  }
+
+
+  .engagement-result{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+
 
   .del-btn-container{
     display: block;

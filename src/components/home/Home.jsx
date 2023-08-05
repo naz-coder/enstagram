@@ -85,18 +85,6 @@ const Home = () =>{
       })
       .catch((error) => alert(error.message));
   };
-//   const signUpHandler = (e) => {
-//     e.preventDefault();
-//     createUserWithEmailAndPassword(auth, emailValue, passwordValue)
-//       .then((crtd) => {
-//         console.log("User created:", crtd.user);
-//         updateProfile(auth.currentUser, {
-//           displayName: userName,
-//         });
-//       })
-//       .catch((error) => alert(error.message));
-//     setOpen(false);
-//   };
 
   // Login handler  function
   const loginHandler = (e) => {
