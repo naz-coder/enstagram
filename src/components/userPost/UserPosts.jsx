@@ -6,8 +6,10 @@ import { addDoc, collection, doc, onSnapshot, serverTimestamp, updateDoc, getDoc
 import { FcLike } from "react-icons/fc";
 import { AiOutlineHeart } from "react-icons/ai";
 import { FaRegComment, FaShareSquare, FaRegBookmark, FaBookmark } from "react-icons/fa";
+import {GoDotFill} from "react-icons/go";
+import {formatDistanceToNow} from "date-fns"
 
-const UserPost = ({ postId, user, userName, kaption, imgSrc, postLikes }) => {
+const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
   const [userComments, setUserComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [islike, setIsliked] = useState(false);
@@ -107,7 +109,12 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, postLikes }) => {
     setIsSaved(!isSaved);
   }
 
-  // Search function
+  // Timing function for when the post was made
+  const postTimeAgeHandler = (timestamp) => {
+    return formatDistanceToNow(timestamp?.seconds * 1000, {
+      addSuffix: true,
+    });
+  };
 
   return (
     <PostStyles>
@@ -116,6 +123,8 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, postLikes }) => {
           <div className="post-header">
             <Avatar src={imgSrc} alt={userName} className="post-avatar" />
             <h3>{userName}</h3>
+            <GoDotFill className="dot-icon"/>
+            <p className="date-value">{postTimeAgeHandler(timestamp)}</p>
           </div>
 
           <img src={imgSrc} className="post-image" />

@@ -17,6 +17,13 @@ export const PostStyles = styled.div`
     column-gap: 1rem;
     padding: 1rem;
   }
+
+  .dot-icon, .date-value{
+    color: #333333;  
+    font-size: 0.9rem;
+    margin-left: -0.5rem;
+  }
+
   .post-image {
     width: 100%;
     object-fit: contain;

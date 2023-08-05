@@ -240,6 +240,7 @@ const Home = () =>{
       userName={post.userName}
       kaption={post.kaption}
       imgSrc={post.imgSrc}
+      timestamp={post.timestamp}
     />
   ))}
   </div>
@@ -257,6 +258,7 @@ const Home = () =>{
         userName={post.userName}
         kaption={post.kaption}
         imgSrc={post.imgSrc}
+        timestamp={post.timestamp}
       />
     ))}
 </div>
