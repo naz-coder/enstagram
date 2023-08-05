@@ -1,10 +1,12 @@
 import { styled } from "styled-components";
 
 export const PostStyles = styled.div`
+.card-outter{
   max-width: 500px;
   background-color: #ffffff;
   border: 1px solid lightgray;
   margin-bottom: 45px;
+}
 
   .post-container {
   }
@@ -29,6 +31,8 @@ export const PostStyles = styled.div`
   .post-comment-container {
     display: flex;
     margin-top: 10px;
+    border-bottom: 1px solid lightgray;
+    height: 3rem;
   }
 
   .post-comments{
@@ -51,8 +55,6 @@ export const PostStyles = styled.div`
     outline: none;
   }
 
-
-
   .post-btn {
     flex: 1;
     border: none;
@@ -65,4 +67,33 @@ export const PostStyles = styled.div`
   .post-btn:disabled {
     cursor: not-allowed;
   }
+
+  .del-btn-container{
+    display: block;
+  }
+
+  .del-btn{
+    background-color: #b1200d;
+    transition: all 0.5s ease-out;
+    background-position: right bottom;
+    color: #ffffff;
+    border: 1px solid #b1200d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    padding: 0.6rem 1rem;
+    margin: 0.5rem 1rem;
+    font-weight: 900;
+    font-size: 0.8rem;
+    /* width: 5rem; */
+    text-transform: capitalize;
+  }
+
+  .del-btn:hover {
+    background-color: #5e0e03;
+    border: 1px solid #5e0e03;
+    background-position: left bottom;
+    transition: all 0.5s ease-in;
+    cursor: pointer;
+  }
+
 `;
