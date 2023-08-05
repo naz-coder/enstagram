@@ -20,7 +20,7 @@ export const PostStyles = styled.div`
 
   .dot-icon, .date-value{
     color: #333333;  
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-left: -0.5rem;
   }
 
@@ -33,6 +33,7 @@ export const PostStyles = styled.div`
 
   .post-text {
     padding: 1rem;
+    font-size: 1.1rem;
   }
 
   .post-engagement-container{
@@ -78,7 +79,7 @@ export const PostStyles = styled.div`
 
   .post-comments p{
     padding-bottom: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .post-input {
@@ -86,6 +87,9 @@ export const PostStyles = styled.div`
     border: none;
     padding: 10px;
     border-top: 1px solid lightgray;
+    font-size: 1rem;
+    font-family: 'Signika Negative', sans-serif;
+
   }
 
   .post-input:focus {
@@ -99,6 +103,8 @@ export const PostStyles = styled.div`
     background-color: transparent;
     color: #6082a3;
     cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Signika Negative', sans-serif;
   }
 
   .post-btn:disabled {
@@ -107,14 +113,14 @@ export const PostStyles = styled.div`
 
   .post-likes-count{
     padding: 0.2rem 1rem 0.9rem 1rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 900;
     color: #333333;
   }
 
   .post-save{
     padding: 0.2rem 1rem 0.9rem 1rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 900;
     color: #555555;
   }
@@ -146,6 +152,7 @@ export const PostStyles = styled.div`
     font-size: 0.8rem;
     /* width: 5rem; */
     text-transform: capitalize;
+    font-family: 'Signika Negative', sans-serif;
   }
 
   .del-btn:hover {

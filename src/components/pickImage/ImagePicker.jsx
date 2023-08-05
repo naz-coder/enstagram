@@ -15,45 +15,87 @@ const ImagePicker = ({ userName }) => {
       setImage(e.target.files[0]);
     }
   };
-
   const uploadBtnHandler = () => {
-    const storageRef = ref(storage, `/images/${image.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // progress function
-        const stage = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setStage(stage);
-      },
-      (error) => {
-        // error function
-        console.log(error);
-        alert(error.message);
-      },
-      () => {
-        // complete function
-        getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-          try {
-            // post img inside the db
-            await addDoc(collection(db, "userposts"), {
-              timestamp: serverTimestamp(),
-              kaption: kaption,
-              imgSrc: url,
-              userName: userName,
-            });
-          } catch (error) {
-            console.error(error.message);
-          }
-          setKaption("");
-          setStage(0);
-          setImage(null);
-        });
-      }
-    );
+    if (image) { // Check if the image state is not null
+      const storageRef = ref(storage, `/images/${image.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // progress function
+          const stage = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setStage(stage);
+        },
+        (error) => {
+          // error function
+          console.log(error);
+          alert(error.message);
+        },
+        () => {
+          // complete function
+          getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+            try {
+              // post img inside the db
+              await addDoc(collection(db, "userposts"), {
+                timestamp: serverTimestamp(),
+                kaption: kaption,
+                imgSrc: url,
+                userName: userName,
+              });
+            } catch (error) {
+              console.error(error.message);
+            }
+            setKaption("");
+            setStage(0);
+            setImage(null);
+          });
+        }
+      );
+    } else {
+      alert("Please select an image before publishing.");
+    }
   };
+  
+  // const uploadBtnHandler = () => {
+  //   const storageRef = ref(storage, `/images/${image.name}`);
+  //   const uploadTask = uploadBytesResumable(storageRef, image);
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       // progress function
+  //       const stage = Math.round(
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //       );
+  //       setStage(stage);
+  //     },
+  //     (error) => {
+  //       // error function
+  //       console.log(error);
+  //       alert(error.message);
+  //     },
+  //     () => {
+  //       // complete function
+  //       getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+  //         try {
+  //           // post img inside the db
+  //           await addDoc(collection(db, "userposts"), {
+  //             timestamp: serverTimestamp(),
+  //             kaption: kaption,
+  //             imgSrc: url,
+  //             userName: userName,
+  //           });
+  //         } catch (error) {
+  //           console.error(error.message);
+  //         }
+  //         setKaption("");
+  //         setStage(0);
+  //         setImage(null);
+  //       });
+  //     }
+  //   );
+  // };
 
   return (
     <ImagePickerStyles>

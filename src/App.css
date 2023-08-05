@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
+
 *{
   margin: 0;
   padding: 0;
@@ -5,7 +7,7 @@
 
 body{
   background-color: #f1eded;
-
+  font-family: 'Signika Negative', sans-serif;
 }
 
 .App-logo {

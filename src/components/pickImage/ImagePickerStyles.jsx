@@ -33,11 +33,8 @@ export const ImagePickerStyles = styled.div`
     /* width: 97.8%; */
     height: 3rem;
     border: 1px solid #aeb1b3;
-    font-family: "Archivo Narrow", sans-serif;
-    font-family: "Fira Sans", sans-serif;
-    font-family: "Josefin Sans", sans-serif;
-    font-family: "Zen Kurenaido", sans-serif;
     border-radius: 0.3rem;
+    font-family: 'Signika Negative', sans-serif;
   }
 
   .kaption-input:focus {
@@ -66,6 +63,7 @@ export const ImagePickerStyles = styled.div`
     font-size: 1rem;
     width: 5rem;
     text-transform: capitalize;
+    font-family: 'Signika Negative', sans-serif;
   }
 
   .publish-btn:hover {

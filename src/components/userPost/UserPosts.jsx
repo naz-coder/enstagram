@@ -71,7 +71,7 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
       console.log("You are not allowed to delete this post.");
     }
   };
-
+    
   // Like toggle function and like counter update
   const likeHandler = async () => {
     if (user) {
@@ -111,9 +111,14 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
 
   // Timing function for when the post was made
   const postTimeAgeHandler = (timestamp) => {
-    return formatDistanceToNow(timestamp?.seconds * 1000, {
-      addSuffix: true,
-    });
+    if (!timestamp) {
+      return "";
+    }
+  
+    const currentTime = new Date();
+    const postTime = timestamp.toDate(); // Convert Firebase Timestamp to JavaScript Date object
+    const timeAgo = formatDistanceToNow(postTime, { addSuffix: true });
+    return timeAgo;
   };
 
   return (
