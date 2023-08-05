@@ -21,6 +21,32 @@ export const HomeStyles = styled.div`
 
   }
 
+  .search-input{
+    font-size: 1.2rem;
+    color: #333333;
+    padding-left: 0.7rem;
+    height: 3rem;
+    margin-bottom: 1.5rem;
+    width: 30vw;
+    height: 3rem;
+    border: 1px solid #aeb1b3;
+    font-family: "Archivo Narrow", sans-serif;
+    font-family: "Fira Sans", sans-serif;
+    font-family: "Josefin Sans", sans-serif;
+    font-family: "Zen Kurenaido", sans-serif;
+    border-radius: 0.3rem;
+  }
+
+  .search-input:focus {
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: #555555;
+  }
+
+
+
   .app-subtitle{
     font-weight: 900;
     font-size: 1.5rem;
@@ -112,11 +138,24 @@ padding-right: 1rem;
 }
 
 @media only screen and (max-width: 768px){
+  .header-container{
+    display: flex;
+    flex-direction: column;
+}
+
+
   .user-postings{
     grid-template-columns: 1fr;
     grid-gap: 0.5%;
   }
 
+  .search-input{
+    width: 80vw;
+  }
+
+  .log-in-btn, .sign-up-btn{
+    margin: 0.5rem 0rem;
+  }
 }
 
 `;
