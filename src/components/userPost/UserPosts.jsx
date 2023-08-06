@@ -58,55 +58,6 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
       unsubscribe();
     };
   }, [postId, user, hidden]);
-  // useEffect(() => {
-  //   let unsubscribe;
-  //   if (postId) {
-  //     const userPostRef = doc(db, "userposts", postId);
-  //     const userCommentRef = collection(userPostRef, "userComments");
-  //     const userPostLikesRef = collection(userPostRef, "postLikes");
-      
-  //     // Fetch the post data including the 'hidden' flag
-  //     unsubscribe = onSnapshot(userPostRef, (snapshot) => {
-  //       const postData = snapshot.data();
-  //       setHidden(postData?.hidden || false);
-  //     });
-  //   // let unsubscribe;
-  //   // if (postId) {
-  //   //   const userPostRef = doc(collection(db, "userposts"), postId);
-  //   //   const userCommentRef = collection(userPostRef, "userComments");
-  //   //   const userPostLikesRef = collection(userPostRef, "postLikes");
-
-  //   //   unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
-  //   //     const komments = snapshot.docs.map((doc) => doc.data());
-  //   //     setUserComments(komments);
-  //   //   });
-
-  //     if (user) {
-  //       // Check if the current user has liked the post
-  //       const querySnapshot = getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
-  //       querySnapshot.then((snapshot) => {
-  //         const likedByUser = !snapshot.empty;
-  //         setIsliked(likedByUser);
-  //         setLikeCount(snapshot.docs.length); // Set the like count based on the number of like documents
-  //       });
-  //     } else {
-  //       setIsliked(false);
-  //       setLikeCount(0);
-  //     }
-
-  //     // Fetch the hidden status of the post and update the local state
-  //     onSnapshot(userPostRef, (snapshot) => {
-  //       const postData = snapshot.data();
-  //       setHidden(postData?.hidden || false);
-  //     });
-  //   }
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [postId, user]);
-
-  
   
   const postCommentHandler = async (e) => {
     e.preventDefault();
@@ -181,9 +132,9 @@ const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
     if (!timestamp) {
       return "";
     }
-  
-    const currentTime = new Date();
-    const postTime = timestamp.toDate(); // Convert Firebase Timestamp to JavaScript Date object
+
+  // Convert Firebase Timestamp to JavaScript Date object
+    const postTime = timestamp.toDate(); 
     const timeAgo = formatDistanceToNow(postTime, { addSuffix: true });
     return timeAgo;
   };
@@ -282,79 +233,63 @@ export default UserPost;
 // import { PostStyles } from "./UserPostStyles";
 // import { Avatar } from "material-ui-core";
 // import { db } from "../../firebase";
-// import { addDoc, collection, doc, onSnapshot, arrayUnion, arrayRemove, serverTimestamp, updateDoc, getDocs, query, where } from "firebase/firestore";
-// // import { arrayUnion, arrayRemove } from "../../firebase";
+// import { addDoc, collection, doc, onSnapshot, serverTimestamp, updateDoc, getDocs, query, where } from "firebase/firestore";
 // import { FcLike } from "react-icons/fc";
 // import { AiOutlineHeart } from "react-icons/ai";
 // import { FaRegComment, FaShareSquare, FaRegBookmark, FaBookmark } from "react-icons/fa";
+// import {GoDotFill} from "react-icons/go";
+// import {formatDistanceToNow} from "date-fns"
 
-// const UserPost = ({ postId, user, userName, kaption, imgSrc, postLikes }) => {
+// const UserPost = ({ postId, user, userName, kaption, imgSrc, timestamp }) => {
 //   const [userComments, setUserComments] = useState([]);
 //   const [newComment, setNewComment] = useState("");
 //   const [islike, setIsliked] = useState(false);
 //   const [likeCount, setLikeCount] = useState(0);
 //   const [isSaved, setIsSaved] = useState(false);
+//   const [hidden, setHidden] = useState(false);
 //   const inputRef = useRef(null);
-
+  
 //   useEffect(() => {
-//     if (user) {
-//       const userPostRef = doc(collection(db, "userposts"), postId);
+//     let unsubscribe;
+//     if (postId) {
+//       const userPostRef = doc(db, "userposts", postId);
 //       const userPostLikesRef = collection(userPostRef, "postLikes");
 
-//       const checkLikedByUser = async () => {
-//         const querySnapshot = await getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
-//         setIsliked(!querySnapshot.empty);
-//       };
-
-//       checkLikedByUser();
-//     }
-//   }, [postId, user]);  
-  
-
-//   //  Save post
-
-//   useEffect(() => {
-//     if (user) {
-//       // Check if the post is saved by the user
-//       const savePostRef = doc(collection(db, "savePost"), user.uid);
-//       onSnapshot(savePostRef, (snapshot) => {
-//         if (snapshot.exists()) {
-//           const savedPostIds = snapshot.data().postIds;
-//           setIsSaved(savedPostIds.includes(postId));
-//         } else {
-//           setIsSaved(false);
-//         }
+//       // Fetch the hidden status of the post and update the local state
+//       unsubscribe = onSnapshot(userPostRef, (snapshot) => {
+//         const postData = snapshot.data();
+//         setHidden(postData?.hidden || false);
 //       });
-//     }
-//   }, [postId, user]);
 
-//   // ...
-
-//   // Bookmark a post
-//   const postSaveHandler = async () => {
-//     if (user) {
-//       const savePostRef = doc(collection(db, "savePost"), user.uid);
-  
-//       try {
-//         if (!isSaved) {
-//           // If the post is not saved, add it to the user's savePost
-//           await updateDoc(savePostRef, {
-//             postIds: arrayUnion(postId),
-//           });
-//         } else {
-//           // If the post is saved, remove it from the user's savePost
-//           await updateDoc(savePostRef, {
-//             postIds: arrayRemove(postId),
-//           });
-//         }
-//         setIsSaved(!isSaved); // Toggle the save state directly here
-//       } catch (error) {
-//         console.error("Save Error:", error);
+//       // Check if the current user has liked the post
+//       if (user) {
+//         const querySnapshot = getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
+//         querySnapshot.then((snapshot) => {
+//           const likedByUser = !snapshot.empty;
+//           setIsliked(likedByUser);
+//           setLikeCount(snapshot.docs.length);
+//         });
+//       } else {
+//         setIsliked(false);
+//         setLikeCount(0);
 //       }
 //     }
-//   };
-  
 
+//     // Fetch comments only when the post is not hidden
+//     if (!hidden) {
+//       const userCommentRef = collection(doc(db, "userposts", postId), "userComments");
+
+//       unsubscribe = onSnapshot(userCommentRef, (snapshot) => {
+//         const komments = snapshot.docs.map((doc) => doc.data());
+//         setUserComments(komments);
+//       });
+//     }
+
+//     return () => {
+//       unsubscribe();
+//     };
+//   }, [postId, user, hidden]);
+  
 //   const postCommentHandler = async (e) => {
 //     e.preventDefault();
 //     const userCommentRef = collection(doc(db, "userposts", postId), "userComments");
@@ -370,42 +305,48 @@ export default UserPost;
 //     }
 //   };
 
-//   const deletePostHandler = () => {
+//   const deletePostHandler = async () => {
 //     if (user.displayName === userName) {
-//       // Delete the post here
-//       console.log("Deleting post...");
+//       try {
+//         const postRef = doc(db, "userposts", postId);
+//         await updateDoc(postRef, { hidden: true }); // Update the 'hidden' flag to true
+//         setHidden(true); // Update the local state to hide the post
+//         console.log("Post hidden successfully.");
+//       } catch (error) {
+//         console.error("Error hiding the post:", error);
+//       }
 //     } else {
-//       console.log("You are not allowed to delete this post.");
+//       console.log("You are not allowed to hide this post.");
 //     }
 //   };
+
 
 //   // Like toggle function and like counter update
 //   const likeHandler = async () => {
 //     if (user) {
 //       const userPostRef = doc(collection(db, "userposts"), postId);
 //       const userPostLikesRef = collection(userPostRef, "postLikes");
-
+  
 //       try {
-//         if (!islike) {
+//         // Check if the post is already liked by the user
+//         const querySnapshot = await getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
+//         const likedByUser = !querySnapshot.empty;
+  
+//         if (!likedByUser) {
 //           // If the post is not liked, add the user's like
 //           await addDoc(userPostLikesRef, { userId: user.uid });
-//           setLikeCount((prevCount) => prevCount + 1);
+//           setLikeCount((prevCount) => prevCount + 1); // Update the like count using the previous count
 //         } else {
-//           // If the post is liked, remove the user's like
-//           const querySnapshot = await getDocs(query(userPostLikesRef, where("userId", "==", user.uid)));
-//           querySnapshot.forEach((doc) => {
-//             doc.ref.delete();
-//           });
-//           setLikeCount((prevCount) => prevCount - 1);
+//           // If the post is already liked, remove the user's like
+//           await querySnapshot.docs[0].ref.delete();
+//           setLikeCount((prevCount) => prevCount - 1); // Update the like count using the previous count
 //         }
-//         setIsliked((prevIsLiked) => !prevIsLiked); // Toggle the like state
+//         setIsliked(!likedByUser); // Toggle the like state based on whether the user has liked or unliked the post
 //       } catch (error) {
 //         console.error("Like Error:", error);
 //       }
 //     }
 //   };
-          
-  
 
 //   // Comment activation function
 //   const commentHandler = () => {
@@ -413,17 +354,32 @@ export default UserPost;
 //   };
 
 //   // Bookmark a post
-//   // const postSaveHandler = () => {
-//   //   setIsSaved(!isSaved);
-//   // }
+//   const postSaveHandler = () => {
+//     setIsSaved(!isSaved);
+//   }
+
+//   // Timing function for when the post was made
+//   const postTimeAgeHandler = (timestamp) => {
+//     if (!timestamp) {
+//       return "";
+//     }
+
+//   // Convert Firebase Timestamp to JavaScript Date object
+//     const postTime = timestamp.toDate(); 
+//     const timeAgo = formatDistanceToNow(postTime, { addSuffix: true });
+//     return timeAgo;
+//   };
 
 //   return (
 //     <PostStyles>
+//       {!hidden &&
 //       <div className="card-outter">
 //         <div className="post-container">
 //           <div className="post-header">
 //             <Avatar src={imgSrc} alt={userName} className="post-avatar" />
 //             <h3>{userName}</h3>
+//             <GoDotFill className="dot-icon"/>
+//             <p className="date-value">{postTimeAgeHandler(timestamp)}</p>
 //           </div>
 
 //           <img src={imgSrc} className="post-image" />
@@ -447,16 +403,15 @@ export default UserPost;
 //             </div>
 
 //             <div className="post-engagment-bookmark" onClick={postSaveHandler}>
-//               {isSaved ? <FaBookmark className="bookmark-icon"/> : <FaRegBookmark className="bookmark-icon"/> }
-//             </div>
+//                {isSaved ? <FaBookmark className="bookmark-icon"/> : <FaRegBookmark className="bookmark-icon"/> }
+//              </div>
 //           </div>
 
 //           {/* Post Engagments Results */}
-//           <div className="engagement-result">
-//           <p className="post-likes-count">{likeCount} {likeCount === 1 ? "like" : "likes"}</p>
-//           <p className="post-save">{isSaved && <p>Saved</p>}</p>
-//           </div>
-
+//            <div className="engagement-result">
+//            <p className="post-likes-count">{likeCount} {likeCount === 1 ? "like" : "likes"}</p>
+//            <p className="post-save">{isSaved && <p>Saved</p>}</p>
+//            </div>
 
 //           <div className="post-comments">
 //             {userComments.map((komment) => (
@@ -497,6 +452,7 @@ export default UserPost;
 //           )}
 //         </div>
 //       </div>
+// }
 //     </PostStyles>
 //   );
 // };

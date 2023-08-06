@@ -8,6 +8,12 @@ export const HomeStyles = styled.div`
   column-gap: 13rem;
 }
 
+.center-layout-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .center-layout{
   /* display: flex; */
   /* padding: 0 15rem; */
@@ -27,7 +33,7 @@ export const HomeStyles = styled.div`
 }
 
   .app-logo {
-    max-width: 150px;
+    max-width: 100px;
     width: 100%;
     height: auto;
 
@@ -40,13 +46,31 @@ export const HomeStyles = styled.div`
   .home-container, .search-container-main{
     display: flex;
     flex-direction: row;
-    column-gap: 0.4rem;
+    column-gap: 0.5rem;
     font-size: 1.5rem;
-    /* font-weight: 900; */
+    margin-bottom: 1rem;
   }
 
-  .home-container p{
-    font-size: 1.3rem;
+  .home-container:hover, .search-container-main:hover{
+    color: #555555;
+    cursor: pointer;
+  }
+
+  .explore-container, .reels-container, .msgs-container, .notification-container, .create-container{
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .explore-container:hover, .reels-container:hover, .msgs-container:hover, .notification-container:hover, .create-container:hover{
+    color: #555555;
+    cursor: pointer;
+  }
+
+  .home-container p, .explore-container p, .reels-container p, .msgs-container p, .notification-container p, .create-container p{
+    font-size: 1.2rem;
 
   }
 
@@ -77,7 +101,30 @@ export const HomeStyles = styled.div`
     color: #555555;
   }
 
+  .user-profile{
+    margin: 1rem 0;
+  }
 
+  .user-profile:hover{
+    color: #555555;
+    cursor: pointer;
+  }
+
+.avatar-container-profile{
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.5rem;
+}
+
+.profile-title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-title h3{
+  font-weight: 300;
+}
 
   .app-subtitle{
     font-weight: 900;
@@ -97,10 +144,20 @@ padding-right: 1rem;
 
   .user-postings{
     padding: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    /* display: grid;
+    grid-template-columns: 1fr;
     grid-gap: 5%;
-    grid-row-gap: 1%;
+    grid-row-gap: 1%; */
+  }
+
+  .right-layout{
+    background-color: #ffffff;
+    padding: 2rem;
+    height: 100vh;
+    border-bottom: 1px solid lightgray;
+    /* position: fixed; */
+    /* z-index: 1; */
+
   }
 
   .log-in-btn{
